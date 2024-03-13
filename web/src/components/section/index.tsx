@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-
 import Card from '../card'
+import { ICard } from '../../types/card'
 import { ISection } from '../../types/section'
 
 import {
@@ -18,28 +18,42 @@ import {
   WrappedSection,
   Wrapper
 } from './styled-components'
-import { ICard } from '../../types/card'
 
 const Section = ({
   section: { id, title, cards },
-  onCardSubmit
+  onCardSubmit,
+  moveCard
 }: {
   section: ISection
-  onCardSubmit: Function
+  onCardSubmit: Function,
+  moveCard: Function
 }) => {
   const [isTempCardActive, setIsTempCardActive] = useState(false)
   const [cardText, setCardText] = useState('')
 
+  function handleDrop(event: React.DragEvent<HTMLElement>): void {
+    event.preventDefault();
+    const cardDataString = event.dataTransfer.getData("application/json");
+    const card = JSON.parse(cardDataString);
+    delete card.section_title;
+    card.section_id = id;
+    moveCard(card);
+  }
+  
+  function handleDragOver(event: React.DragEvent<HTMLDivElement>): void {
+    event.preventDefault();
+  }
+
   return (
     <Wrapper>
-      <WrappedSection>
+      <WrappedSection onDrop={handleDrop} onDragOver={handleDragOver}>
         <SectionHeader>
           <SectionTitle>{title}</SectionTitle>
         </SectionHeader>
         <CardsContainer>
           {cards.length &&
             cards.map((card: ICard) => {
-              return <Card key={card.id} card={card}></Card>
+              return <Card key={card.id} card={card}></Card> // Use the imported 'Card' component
             })}
         </CardsContainer>
         {isTempCardActive ? (

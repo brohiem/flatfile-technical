@@ -10,10 +10,10 @@ export class CardsService {
     private cardsRepository: Repository<CardEntity>
   ) {}
 
-  create({ sectionId, title }: { sectionId: number; title: string }): Promise<CardEntity> {
-    let card = new CardEntity()
-    card.title = title
-    card.section_id = sectionId
-    return this.cardsRepository.save(card)
+  async moveCard(card: CardEntity): Promise<CardEntity> {
+    console.log('Moving card:', card, '\n');
+    await this.cardsRepository.update(card.id, { section_id: card.section_id })
+    // Retrieve the updated entity
+    return await this.cardsRepository.findOne(card.id);
   }
 }

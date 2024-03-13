@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { useState } from 'react';
+import CardDetailsModal from '../modal/CardDetailsModal';
 
 const CardContainer = styled.div`
   border-radius: 3px;
@@ -14,10 +16,52 @@ const CardContainer = styled.div`
 
 const CardTitle = styled.div``
 
-const Card = ({ card: { title } }: any) => (
-  <CardContainer className='card'>
-    <CardTitle>{title}</CardTitle>
-  </CardContainer>
-)
+const getTitle = (id: number) => {
+  const sectionTitles = ['Backlog', 'Ready for Development', 'In Progress', 'In Review', 'Done'];
+  return sectionTitles[id];
+}
 
-export default Card
+const Card = ({ card }: any) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    event.dataTransfer.setData("application/json", JSON.stringify(card));
+  };
+  
+  const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+    setIsDragging(false);
+  };
+
+  const toggleModal = () => { 
+    if (!isModalOpen) {
+      // get section title from section id if the card is being opened
+      card.section_title = getTitle(card.section_id);
+    }
+    setIsModalOpen(!isModalOpen)
+  };
+  
+  return (
+    <>
+      <CardContainer
+        id={card.id}
+        className={`card ${isDragging ? 'dragging' : ''}`}
+        draggable={true}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <CardTitle onClick={toggleModal}>
+          {card.title}
+        </CardTitle>
+      </CardContainer>
+      <CardDetailsModal
+        card={card}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+   </>
+  );
+};
+
+export default Card;

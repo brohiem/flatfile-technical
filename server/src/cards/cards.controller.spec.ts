@@ -42,6 +42,7 @@ describe('CardsController', () => {
   it('should call save on cards repository', async () => {
     const card = new CardEntity()
     card.title = 'test'
+    card.description = 'test description'
     card.section_id = 1
     jest.spyOn(service, 'create').mockImplementation(() => Promise.resolve(card))
     expect(await controller.addCard({ sectionId: 1, title: 'test' })).toBe(card)

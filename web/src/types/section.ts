@@ -5,3 +5,4 @@ export interface ISection {
   title: string
   cards: ICard[]
 }
+

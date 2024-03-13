@@ -4,10 +4,12 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: true,
     cors: (req, callback) => {
+      const origin = req.headers.origin; // Get the origin
+      const host = req.headers.host; // Get the destination host
+      
       callback(null, {
-        origin: req.method !== 'POST',
+        origin: true,
         preflightContinue: false,
       })
     },
