@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   type: 'postgres',
   host: '0.0.0.0',
   port: 5432,
