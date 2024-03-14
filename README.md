@@ -46,11 +46,11 @@ STEPS:
    - Added modal component and related functions to display card detail
 
 7) **Test Features** 🧪
-	Initial testing was positive. D-n-D and Modal functionality worked as expected.
+	<br>Initial testing was positive. D-n-D and Modal functionality worked as expected.
 	Additional testing found a bug creating the card. Fixed by making the field optional 
 	
 1) **Commit, PR**
-	https://github.com/FlatFilers/flatfile-technical/pull/16
+	<br>https://github.com/FlatFilers/flatfile-technical/pull/16
    
 9) **Documentation**
 	* Yep, that's what I'm doing now ;-)
